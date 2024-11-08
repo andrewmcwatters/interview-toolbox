@@ -82,9 +82,33 @@ function MyComponent() {
 }
 ```
 
+###### `useData`[^3]
+```js
+function useData(url) {
+  const [data, setData] = useState(null);
+  useEffect(() => {
+    if (url) {
+      let ignore = false;
+      fetch(url)
+        .then(response => response.json())
+        .then(json => {
+          if (!ignore) {
+            setData(json);
+          }
+        });
+      return () => {
+        ignore = true;
+      };
+    }
+  }, [url]);
+  return data;
+}
+```
+
 ## License
 Content at [legacy.reactjs.org](https://legacy.reactjs.org/) is CC-BY-4.0 licensed, as found in the [LICENSE-DOCS.md](https://github.com/reactjs/legacy.reactjs.org/blob/main/LICENSE-DOCS.md) file.  
 Content submitted to [react.dev](https://react.dev/) is CC-BY-4.0 licensed, as found in the [LICENSE-DOCS.md](https://github.com/reactjs/react.dev/blob/main/LICENSE-DOCS.md) file.
 
 [^1]: https://legacy.reactjs.org/docs/add-react-to-a-website.html
 [^2]: https://legacy.reactjs.org/docs/faq-ajax.html
+[^3]: https://react.dev/learn/reusing-logic-with-custom-hooks#when-to-use-custom-hooks
